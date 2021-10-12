@@ -26,3 +26,6 @@ O Stripe é uma infraestrutura de pagamentos (uma das mais utilizadas atualmente
 Um Handless CMS é um dashboard que facilita a adição de conteúdo em nossos sites. O prismic foi utilizado apenas para armazenar os conteúdos dos nossos Posts e trazer as páginas isoladas de cada Post.
 
 ### <img width="70" height="30" src="https://dbdb.io/media/logos/fauna2020.png"/>
+
+### To DO
+
