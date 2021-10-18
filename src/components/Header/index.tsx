@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { SignInButton } from '../SignInButton'
 import styles from './styles.module.scss'
 
@@ -9,7 +10,7 @@ export function Header() {
                 <img src="/images/logo.svg" alt="Logo ig.news" />
 
                 <nav>
-                    <a className={styles.active}>Home</a>
+                    <a href="/" className={styles.active}>Home</a>
                     <a>Posts</a>
                 </nav>
 
