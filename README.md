@@ -2,6 +2,9 @@
 
 ![Home do IgNews](Home-IgNews.png)
 
+## Propósito do Projeto
+O IgNews é um Blog de Noticias sobre a tecnologia React
+
 
 ## 📖 Tecnologias utilizadas
 
