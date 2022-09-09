@@ -1,3 +1,4 @@
+import React from 'react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { SubscribeButton } from '../components/SubscribeButton'
@@ -13,13 +14,13 @@ interface HomeProps {
   }
 }
 
-export default function Home({ product }: HomeProps) {
+export default function HomeComponent({ product }: HomeProps) {
 
 
   return (
     <>
       <Head>
-        <title>Home | ig.news</title>  
+        <title>Home | Ig.news</title>  
       </Head>
 
       <main className={styles.contentContainer}>
@@ -29,7 +30,7 @@ export default function Home({ product }: HomeProps) {
           <h1>News about the <span>React</span> world.</h1>
 
           <p>
-            Get accessto all the publications <br />
+            Get access to all the publications <br />
             <span>for {product.amount} month</span>
           </p>
 
@@ -41,6 +42,10 @@ export default function Home({ product }: HomeProps) {
     </>
   )
 }
+
+export const Home = React.memo(HomeComponent, (prev, next) => {
+  return Object.is(next.product, prev.product)
+})
 
 export const getStaticProps: GetStaticProps = async () => {
 
