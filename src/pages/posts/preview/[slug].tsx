@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { getSession, useSession } from "next-auth/client";
 
 import { RichText } from "prismic-dom";
@@ -23,10 +23,10 @@ export default function PostPreview({ post }: PostPreviewProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (session.activeSubscription) {
-      router.push(`/posts/${post.slug}`)
+    if (session?.activeSubscription) {
+      router.push(`/posts/${post.slug}`);
     }
-  }, [session])
+  }, [session]);
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
           <div className={styles.continueReading}>
             Wanna continue reading?
             <Link href="">
-            <a href="">Subscribe now </a>
+              <a href="">Subscribe now </a>
             </Link>
           </div>
         </article>
@@ -88,6 +88,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post,
     },
-    revalidate: 60 * 30, // 30 minutes 
+    revalidate: 60 * 30, // 30 minutes
   };
 };
