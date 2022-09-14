@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 
 import { getPrismicClient } from "../../../services/prismic";
 import styles from "../post.module.scss";
@@ -28,7 +28,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
     if (session?.activeSubscription) {
       router.push(`/posts/${post.slug}`);
     }
-  }, [session]);
+  }, [session, post]);
 
   return (
     <>
@@ -56,7 +56,8 @@ export default function PostPreview({ post }: PostPreviewProps) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
+export const getStaticPaths: GetStaticPaths = async () => {
+
   return {
     paths: [],
     fallback: "blocking",
@@ -66,11 +67,13 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params;
 
+  if (!slug) {
+    return
+  }
+
   const prismic = getPrismicClient();
 
   const response = await prismic.getByUID("publication", String(slug), {});
-
-  console.log(response.data);
 
   const post = {
     slug,

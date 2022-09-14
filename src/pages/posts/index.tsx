@@ -10,11 +10,13 @@ export type Post = {
   title: string;
   excerpt: string;
   updatedAt: string;
-}
+};
 interface PostsProps {
-  posts: Post[]
+  posts: Post[];
 }
 export default function Posts({ posts }: PostsProps) {
+  console.log(posts)
+
   return (
     <>
       <Head>
@@ -23,18 +25,15 @@ export default function Posts({ posts }: PostsProps) {
 
       <main className={styles.container}>
         <div className={styles.posts}>
-          
-        {posts.map(post => (
-          <Link href={`/posts/${post.slug}`}  key={post.slug}>
-          <a>
-          <time>{post.updatedAt}</time>
-          <strong>{post.title}</strong>
-          <p>
-            {post.excerpt}
-          </p>
-        </a>
-        </Link>
-        ))}
+          {posts.map((post) => (
+            <Link href={`/posts/${post.slug}`} key={post.slug}>
+              <a>
+                <time>{post.updatedAt}</time>
+                <strong>{post.title}</strong>
+                <p>{post.excerpt}</p>
+              </a>
+            </Link>
+          ))}
         </div>
       </main>
     </>
@@ -44,12 +43,11 @@ export default function Posts({ posts }: PostsProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
-  const response = await prismic.getAllByType('publication', {
-    fetchLinks: ['publication.title', 'publication.content']
+  const response = await prismic.getAllByType("publication", {
+    fetchLinks: ["publication.title", "publication.content"],
   });
 
-
-  const posts = response.map(post => ({
+  const posts = response.map((post) => ({
     slug: post.uid,
     title: asText(post.data.title),
     excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
@@ -63,7 +61,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      posts
+      posts,
     },
   };
 };
