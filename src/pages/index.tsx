@@ -6,6 +6,7 @@ import { SubscribeButton } from '../components/SubscribeButton'
 import { stripe } from '../services/stripe'
 
 import styles from './home.module.scss' 
+import { GetStaticPaths } from 'next';
 
 
 interface HomeProps {
@@ -15,7 +16,7 @@ interface HomeProps {
   }
 }
 
-export default function HomeComponent({ product }: HomeProps) {
+export default function Home({ product }: HomeProps) {
 
 
   return (
@@ -44,9 +45,9 @@ export default function HomeComponent({ product }: HomeProps) {
   )
 }
 
-export const Home = React.memo(HomeComponent, (prev, next) => {
-  return Object.is(next.product, prev.product)
-})
+// export const Home = React.memo(HomeComponent, (prev, next) => {
+//   return Object.is(next.product, prev.product)
+// })
 
 export const getStaticProps: GetStaticProps = async () => {
 
