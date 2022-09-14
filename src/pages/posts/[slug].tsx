@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
-import Head from 'next/head'
+import Head from "next/head";
 import { getSession } from "next-auth/client";
-import { RichText } from "prismic-dom";
+import * as PrismicH from "@prismicio/helpers";
 import { getPrismicClient } from "../../services/prismic";
-import styles from './post.module.scss';
+import styles from "./post.module.scss";
 
 interface PostProps {
   post: {
@@ -17,53 +17,67 @@ interface PostProps {
 export default function Post({ post }: PostProps) {
   return (
     <>
-    <Head>
+      <Head>
         <title>{post.title} | Ig.news</title>
-    </Head>
+      </Head>
 
-    <main className={styles.container}>
+      <main className={styles.container}>
         <article className={styles.post}>
-            <h1>{post.title}</h1>
-            <time>{post.updatedAt}</time>
-            <div dangerouslySetInnerHTML={{__html: post.content}} className={styles.postContent} />
+          <h1>{post.title}</h1>
+          <time>{post.updatedAt}</time>
+          <div
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            className={styles.postContent}
+          />
         </article>
-    </main>
+      </main>
     </>
-  )
+  );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params,
+}) => {
   const session = await getSession({ req });
   const { slug } = params;
 
-//   console.log(session)
+  console.log("Minha sessão:", session, "e no final meu slug param: ", params);
 
   if (!session?.activeSubscription) {
     return {
-        redirect: {
-            destination: '/',
-            permanent: false
-        }
-    }
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
   const prismic = getPrismicClient(req);
+  let post = {};
+  try {
+    const response = await prismic.getByUID("publication", String(slug), {});
 
-  const response = await prismic.getByUID("publication", String(slug), {});
-
-  const post = {
-    slug,
-    title: RichText.asText(response.data.title),
-    content: RichText.asHtml(response.data.content),
-    updatedAt: new Date(response.last_publication_date).toLocaleDateString(
-      "pt-BR",
-      {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }
-    ),
-  };
+    post = {
+      slug,
+      title: PrismicH.asText(response.data.title),
+      content: PrismicH.asHTML(response.data.content),
+      updatedAt: new Date(response.last_publication_date).toLocaleDateString(
+        "pt-BR",
+        {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }
+      ),
+    };
+  } catch (err) {
+    return {
+      props: {
+        post: {},
+      },
+    };
+  }
 
   return {
     props: {
