@@ -52,6 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       success_url: process.env.STRIPE_SUCCESS_URL,
       cancel_url: process.env.STRIPE_CANCEL_URL,
     });
+    // console.log('Criei a subscription', checkoutSession)
 
     return res.status(200).json({ sessionId: checkoutSession.id });
   } else {

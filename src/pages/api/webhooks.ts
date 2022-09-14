@@ -44,6 +44,8 @@ const relevantEvents = new Set([
       }
   
       const { type } = event;
+
+      console.log('event', type)
   
       if (relevantEvents.has(type)) {
         try {
@@ -61,7 +63,8 @@ const relevantEvents = new Set([
               break;
             case 'checkout.session.completed':
               const checkoutSession = event.data.object as Stripe.Checkout.Session;
-              
+              console.log(checkoutSession.subscription.toString(),
+              checkoutSession.customer.toString(),)
               await saveSubscription(
                 checkoutSession.subscription.toString(),
                 checkoutSession.customer.toString(),

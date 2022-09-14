@@ -1,8 +1,7 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import Link from 'next/link';
-import * as Prismic from "@prismicio/client";
-import { RichText } from 'prismic-dom'
+import { asText} from "@prismicio/helpers"
 import { getPrismicClient } from "../../services/prismic";
 import styles from "./styles.module.scss";
 
@@ -52,7 +51,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const posts = response.map(post => ({
     slug: post.uid,
-    title: RichText.asText(post.data.title),
+    title: asText(post.data.title),
     excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
     updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
       day: '2-digit',
